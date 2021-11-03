@@ -58,12 +58,67 @@ const Categoria = database.define("categorias", {
   }
 });
 
+const Venda = database.define("vendas", {
+  id:{
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV1,
+    primaryKey: true
+  },
+  data:{
+    type: Sequelize.DATE,
+    allowNull: false
+  },
+  status:{
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  totalBruto:{
+    type: Sequelize.DECIMAL,
+    allowNull: false
+  },
+  desconto:{
+    type: Sequelize.DECIMAL,
+    allowNull: false
+  },
+  totalLiquido:{
+    type: Sequelize.DECIMAL,
+    allowNull: false
+  }
+});
+
+const VendaItem = database.define("vendaItens", {
+  id:{
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV1,
+    primaryKey: true
+  },
+  quantidade:{
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  preco:{
+    type: Sequelize.DECIMAL,
+    allowNull: false
+  },
+  total:{
+    type: Sequelize.DECIMAL,
+    allowNull: false
+  }
+});
+
 Categoria.hasMany(Produto);
 Produto.belongsTo(Categoria);
+
+Usuario.hasMany(Venda);
+Venda.belongsTo(Usuario);
+
+Venda.belongsToMany(Produto, { through: VendaItem, as: "items" });
 
 module.exports = {
   database,
   Usuario,
   Produto,
-  Categoria
+  Categoria,
+  Venda,
+  VendaItem
 };

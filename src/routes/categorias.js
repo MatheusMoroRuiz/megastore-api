@@ -1,8 +1,9 @@
 var express = require("express");
+const auth = require("../auth");
 const { Categoria, Produto } = require("../models");
 var router = express.Router();
 
-router.get("/", async function (req, res) {
+router.get("/", auth, async function (req, res) {
     res.send(await Categoria.findAll());
 });
 
@@ -16,7 +17,7 @@ router.post("/", async function(req, res){
     }
 });
 
-router.get("/:id", async function(req, res){
+router.get("/:id", auth, async function(req, res){
     var categoria = await Categoria.findByPk(req.params.id);
     try {
         if (categoria == null) throw new Error("Categoria não existe");
@@ -28,7 +29,7 @@ router.get("/:id", async function(req, res){
     }
 });
 
-router.get("/:id/produtos", async function(req, res){
+router.get("/:id/produtos", auth, async function(req, res){
     var categoria = await Categoria.findByPk(req.params.id);
     try {
         if (categoria == null) throw new Error("Categoria não existe");
@@ -45,7 +46,7 @@ router.get("/:id/produtos", async function(req, res){
     }
 });
 
-router.put("/:id", async function(req, res){
+router.put("/:id", auth, async function(req, res){
     var categoria = await Categoria.findByPk(req.params.id);
 
     try {
@@ -61,7 +62,7 @@ router.put("/:id", async function(req, res){
     }
 });
 
-router.delete("/:id", async function (req, res) {
+router.delete("/:id",auth, async function (req, res) {
     var categoria = await Categoria.findByPk(req.params.id);
     try {
       if (categoria == null) throw new Error("Categoria não existe");
